@@ -247,6 +247,7 @@ body {
 .place-nav-hedaer {
     gap: 40px;
     position: relative;
+    cursor: pointer;
 }
 
 .place-nav-title {
@@ -1413,4 +1414,193 @@ body {
 
 .vy14 {
     margin-bottom: 8px;
+}
+
+.plan-transitions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.wrapper-geographical-start {
+    position: relative;
+}
+
+.plan-transition {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    justify-content: space-between;
+}
+
+.plan-start {
+    margin-left: 14px;
+}
+
+.wrapper-plan-start {
+    position: relative;
+}
+
+.geographical-start {
+    overflow: hidden;
+    max-width: 200px;
+    line-height: 20px !important;
+    font-size: 16px !important;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 200px;
+    color: #1a202c !important;
+}
+
+.wrapper-input-geographical {
+    width: 200px;
+    color: #1a202c;
+    font-size: 16px;
+    line-height: 20px;
+    border-radius: 8px;
+    margin-bottom: -6px;
+    position: absolute;
+    top: -2px;
+    left: 0;
+}
+
+.wrapper-input-geographical-destination input {
+    overflow: hidden !important;
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.wrapper-input-geographical-destination {
+    width: 200px;
+    color: #1a202c;
+    font-size: 16px;
+    line-height: 20px;
+    border-radius: 8px;
+    margin-bottom: -6px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.input-geographical {
+    font: inherit;
+    color: currentColor;
+    width: 100%;
+    border: 0;
+    height: 1.1876em;
+    display: -webkit-box;
+    padding: 6px 0 7px;
+    min-width: 0;
+    background: none;
+    box-sizing: content-box;
+    letter-spacing: inherit;
+    animation-duration: 10ms;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.line-dash {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    margin: 12px 0 -17px;
+    transition: all .3s;
+}
+
+.wrapper-plan-destination {
+    position: relative;
+}
+
+.plane-time {
+    margin-left: 24px;
+    position: relative;
+    min-width: 275px;
+}
+
+.time-plane-depart {
+    text-align: left;
+    padding-right: 32px;
+}
+
+.round-trip {
+    width: 58px;
+    height: 38px;
+    display: inline-flex;
+    padding: 12px;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.toggle-round-trip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff;
+    z-index: 1;
+    transition: left 150mscubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 150mscubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    padding: 9px;
+    border-radius: 50%;
+
+}
+
+.vnt1673 {
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+    height: 100%;
+    opacity: 0;
+    z-index: 1;
+    left: -100%;
+    width: 300%;
+}
+
+.toggle-plane {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    ;
+}
+
+.vnt1158 {
+    width: 100%;
+    height: 100%;
+    opacity: 0.38;
+    background-color: #000;
+    z-index: -1;
+    border-radius: 8px;
+    transition: opacity 150mscubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 150mscubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.toggle-round-trip.toggle-round-trip-check+.vnt1158 {
+    background-color: #00b6f3;
+}
+
+.toggle-round-trip-check {
+    transform: translate(20px);
+    color: #00b6f3 !important;
+}
+
+.seat-class-guest {
+    position: relative;
+}
+
+.vnt12 {
+    text-align: left;
+    color: #4a5568 !important;
+}
+
+.vnt13 {
+    text-overflow: ellipsis;
+    text-align: left;
+    width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
 }

@@ -65,6 +65,79 @@ document.addEventListener("DOMContentLoaded", () => {
     const timeRent = document.querySelector(".date-rent");
     const guest = document.querySelector(".number-peoples");
     const numberRooms = document.querySelector(".number_room-number-people");
+    const navigationWrapper = document.querySelector(".vnt203");
+
+    function createSubNavigationWrrapperHotel() {
+        if (!navigationWrapper.contains(document.querySelector(".place-nav-footer"))) {
+            const placeFooter = document.createElement("div");
+            placeFooter.classList.add("place-nav-footer", "flex-align");
+            placeFooter.innerHTML = `
+                 <div class="place-hotel flex-column">
+                                        <span class="hotel">Địa điểm</span>
+                                        <div class="input-hotel">
+                                            <input id="input-note-hotel" type="text"
+                                                class="note-hotel base-note-hotel"
+                                                placeholder="Địa điểm, khách sạn trong nước">
+                                        </div>
+                                    </div>
+                                    <div class="vertical-line"></div>
+                                    <div class="date-nav-footer flex-align">
+                                        <div class="date-go  flex-column">
+                                            <span class="title-contrainer">Ngày đến</span>
+                                            <span class="title-content">Chọn ngày đi</span>
+                                        </div>
+                                        <div class="icon-date-nav flex-align">
+                                            <svg width="10" height="9" fill="none" style="margin-left: 2px;">
+                                                <path
+                                                    d="M4.982.504h.173A3.319 3.319 0 008.66 6.01 3.982 3.982 0 114.982.5v.004z"
+                                                    stroke="#718096" stroke-linecap="round" stroke-linejoin="round">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="date-backHome  flex-column">
+                                            <span class="title-contrainer">Ngày về</span>
+                                            <span class="title-content">Chọn ngày về</span>
+                                        </div>
+                                    </div>
+                                    <div class="vertical-line"></div>
+                                    <div class="number-peoples flex-align">
+                                        <div class="number-people  flex-column">
+                                            <span class="title-contrainer">Số phòng, số khách</span>
+                                            <span class="title-content vnt123">1 phòng, 1 người lớn, 0 trẻ em</span>
+                                        </div>
+                                        <button class="btn-serach flex-align btn-serach-container serach-contents">
+                                            <span class="serach-label flex-align">
+                                                <svg width="23" height="24" fill="none" class="svgFillAll"
+                                                    style="stroke: white;">
+                                                    <path
+                                                        d="M21.312 22.5l-4.742-4.742m2.71-7.451a8.806 8.806 0 11-17.613 0 8.806 8.806 0 0117.613 0z"
+                                                        stroke="#fff" stroke-width="3" stroke-linecap="round"
+                                                        stroke-linejoin="round"></path>
+                                                </svg>
+                                            </span>
+                                            <span class="serach-label_wrrapper"></span>
+                                        </button>
+                                    </div>
+                                    <div class="vertical-line" style="width: 0;"></div>
+                                    <div class="sub-navigation navigation-hotel flex" style="height: 0;">
+                                    </div>
+                                    <div class="sub-navigation date-rent flex" style="height: 0;">
+
+                                    </div>
+                                    <div class="sub-navigation number_room-number-people" id="roomWrapper"
+                                        style="height: 0;">
+                                    </div>
+            `
+            navigationWrapper.appendChild(placeFooter);
+        }
+    }
+    window.addEventListener("load", () => {
+        createSubNavigationWrrapperHotel();
+    })
+
+
+
+
 
 
 
@@ -239,14 +312,14 @@ document.addEventListener("DOMContentLoaded", () => {
                                                     <span>
                                                         Đi một mình
                                                     </span>
-                                                    <div class="title-Community12">1 phòng, 1 người lớn</div>
+                                                    <div class="title-Community12 vnt2010">1 phòng, 1 người lớn</div>
                                                 </div>
                                                 <div class="content-room vnt1021 flex-column "
                                                     style="border-bottom:1px solid rgb(226, 232, 240); background-color:inherit;">
                                                     <span>
                                                         Đi cặp đôi/2 người
                                                     </span>
-                                                    <div class="title-Community12">1 phòng, 2 người lớn</div>
+                                                    <div class="title-Community12 vnt2010">1 phòng, 2 người lớn</div>
                                                 </div>
                                                 <div class="content-room vnt1022 flex-align vn1023"
                                                     style="border-bottom:1px solid rgb(226, 232, 240); background-color:inherit; justify-content: space-between;">
@@ -367,8 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }, 50);
 
-
-
             }
         });
 
@@ -423,9 +494,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 dateObj: new Date(date.year, date.month - 1, date.day) // Chuyển về đối tượng Date
             }));
         }
-        console.log(date.month);
         return [];
     }
+    document.querySelector(".serach-label_wrrapper").addEventListener("click", () => {
+        localStorage.removeItem("selectedDates");
+        updateSelectedDatesUI();
+        window.location.reload();
+    })
 
     function updateSelectedDatesUI() {
         let selectedDates = getSelectedDates();
@@ -700,18 +775,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // function updateGuestSelection() {
-    //     const titleContent = document.querySelector(".number-people .title-content");
+    //     const titleContent = document.querySelector(".title-content.vnt123");
     //     const numberRooms = document.querySelector(".number-room-people");
 
     //     if (!numberRooms) return;
 
     //     numberRooms.addEventListener("click", (event) => {
-    //         const selectedOption = event.target.closest(".vnt1022");
-    //         console.log(selectedOption)
+    //         const selectedOption = event.target.closest(".vnt1021");
+    //         console.log(selectedOption);
 
     //         if (selectedOption) {
     //             const selectText = selectedOption.querySelector(".title-Community12").textContent.trim();
-    //             const guests = selectText.match(/\d+ người lớn/);
+    //             console.log(selectText);
+    //             const selectTextElenment = selectTextElenment.textContent.trim();
+    //             const guests = selectTextElenment.match(/\d+ người lớn/);
 
     //             if (guests) {
     //                 titleContent.textContent = titleContent.textContent.replace(/\d+ người lớn/, guests[0]);
@@ -731,6 +808,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
     function runFunctions() {
 
         handleSubNavigation();
@@ -746,6 +825,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     runFunctions();
+
 
 });
 
