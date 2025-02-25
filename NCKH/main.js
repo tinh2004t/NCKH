@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // handle chat-foamy
     let arrowDiv;
     let lineHidden;
     let isArrow = false;
@@ -59,84 +58,294 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // handle sub-navigation
+    const plane = document.querySelector(".vnt354");
+    const hotel = document.querySelector(".vnt353");
+    const borderLine = document.createElement("div");
+    borderLine.classList.add("border-line-place");
+
+
+    function createSubNavigationWrrapperHotel() {
+        return new Promise((resolve) => {
+            const navigationWrapper = document.querySelector(".vnt203");
+            if (!navigationWrapper.contains(document.querySelector(".place-nav-footer"))) {
+                const placeFooter = document.createElement("div");
+                placeFooter.classList.add("place-nav-footer", "flex-align");
+                placeFooter.innerHTML = `
+                     <div class="place-hotel flex-column">
+                                            <span class="hotel">Địa điểm</span>
+                                            <div class="input-hotel">
+                                                <input id="input-note-hotel" type="text"
+                                                    class="note-hotel base-note-hotel"
+                                                    placeholder="Địa điểm, khách sạn trong nước">
+                                            </div>
+                                        </div>
+                                        <div class="vertical-line"></div>
+                                        <div class="date-nav-footer flex-align">
+                                            <div class="date-go  flex-column">
+                                                <span class="title-contrainer">Ngày đến</span>
+                                                <span class="title-content">Chọn ngày đi</span>
+                                            </div>
+                                            <div class="icon-date-nav flex-align">
+                                                <svg width="10" height="9" fill="none" style="margin-left: 2px;">
+                                                    <path
+                                                        d="M4.982.504h.173A3.319 3.319 0 008.66 6.01 3.982 3.982 0 114.982.5v.004z"
+                                                        stroke="#718096" stroke-linecap="round" stroke-linejoin="round">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <div class="date-backHome  flex-column">
+                                                <span class="title-contrainer">Ngày về</span>
+                                                <span class="title-content">Chọn ngày về</span>
+                                            </div>
+                                        </div>
+                                        <div class="vertical-line"></div>
+                                        <div class="number-peoples flex-align">
+                                            <div class="number-people  flex-column">
+                                                <span class="title-contrainer">Số phòng, số khách</span>
+                                                <span class="title-content vnt123">1 phòng, 1 người lớn, 0 trẻ em</span>
+                                            </div>
+                                            <button class="btn-serach flex-align btn-serach-container serach-contents">
+                                                <span class="serach-label flex-align">
+                                                    <svg width="23" height="24" fill="none" class="svgFillAll"
+                                                        style="stroke: white;">
+                                                        <path
+                                                            d="M21.312 22.5l-4.742-4.742m2.71-7.451a8.806 8.806 0 11-17.613 0 8.806 8.806 0 0117.613 0z"
+                                                            stroke="#fff" stroke-width="3" stroke-linecap="round"
+                                                            stroke-linejoin="round"></path>
+                                                    </svg>
+                                                </span>
+                                                <span class="serach-label_wrrapper"></span>
+                                            </button>
+                                        </div>
+                                        <div class="vertical-line" style="width: 0;"></div>
+                                        <div class="sub-navigation navigation-hotel flex" style="height: 0;">
+                                        </div>
+                                        <div class="sub-navigation date-rent flex" style="height: 0;">
+    
+                                        </div>
+                                        <div class="sub-navigation number_room-number-people" id="roomWrapper"
+                                            style="height: 0;">
+                                        </div>
+                `
+                navigationWrapper.appendChild(placeFooter);
+
+
+
+                document.querySelector(".serach-label_wrrapper").addEventListener("click", () => {
+                    localStorage.removeItem("selectedDates");
+                    updateSelectedDatesUI();
+                    window.location.reload();
+                })
+            }
+            resolve();
+        })
+    }
+    window.addEventListener("load", () => {
+        createSubNavigationWrrapperHotel();
+        const hotelNav = document.querySelector(".vnt353");
+        if (hotelNav) {
+            hotelNav.appendChild(borderLine);
+        }
+    })
+    function createSubNavigationWrrapperPlane() {
+        return new Promise((resolve) => {
+            const navigationWrapper = document.querySelector(".vnt203");
+            if (!navigationWrapper.contains(document.querySelector(".plan-transitions"))) {
+                const planTransitions = document.createElement("div");
+                planTransitions.classList.add("plan-transitions");
+
+                planTransitions.innerHTML = `
+                    <div class="plan-transition"
+                                                style="box-shadow: 0 15px 15px rgba(0, 0, 0, .2); height: 67px;">
+                                                <div class="plan-start">
+                                                    <div class="wrapper-plan-start">
+                                                        <div class="title-Community12" style="text-align: left;">Từ
+                                                        </div>
+                                                        <div class="wrapper-geographical-start">
+                                                            <div class="title-Community14 geographical-start"
+                                                                style="opacity: 1; font-weight: bold;">
+                                                                Hà Nội
+                                                            </div>
+                                                            <div class="wrapper-input-geographical flex-align"
+                                                                style="opacity: 0;">
+                                                                <input type="text" id="geographical-start"
+                                                                    class="input-geographical" autocomplete="off"
+                                                                    placeholder="Tìm kiếm chuyến bay trong nước">
+                                                                <svg width="16" height="16" fill="none"
+                                                                    style="cursor: pointer;" class="item-close">
+                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                        d="M8 15A7 7 0 108 1a7 7 0 000 14zM6.869 5.631A.875.875 0 005.63 6.87L6.763 8 5.63 9.131A.875.875 0 106.87 10.37L8 9.237l1.131 1.132A.875.875 0 0010.37 9.13L9.237 8l1.132-1.131A.875.875 0 009.13 5.63L8 6.763 6.869 5.63z"
+                                                                        fill="#A0AEC0"></path>
+                                                                </svg>
+                                                            </div>
+    
+                                                        </div>
+    
+                                                    </div>
+                                                </div>
+                                                <div class="return-start-destination">
+                                                    <svg width="44" height="44" fill="none"
+                                                        style="height: 32px; cursor: pointer;">
+                                                        <g filter="url(#switch_svg__filter0_d)">
+                                                            <rect x="38" width="32" height="32" rx="16"
+                                                                transform="rotate(90 38 0)" fill="#00B6F3"></rect>
+                                                        </g>
+                                                        <path d="M28.667 11.833h-10 10z" fill="#fff"></path>
+                                                        <path d="M28.667 11.833L25.333 8.5v6.667l3.334-3.334zm0 0h-10"
+                                                            stroke="#fff" stroke-width="2.1" stroke-linecap="round"
+                                                            stroke-linejoin="round"></path>
+                                                        <path d="M15.333 20.167h10-10z" fill="#fff"></path>
+                                                        <path d="M15.333 20.167l3.334 3.333v-6.667l-3.334 3.334zm0 0h10"
+                                                            stroke="#fff" stroke-width="2.1" stroke-linecap="round"
+                                                            stroke-linejoin="round"></path>
+                                                        <defs>
+                                                            <filter id="switch_svg__filter0_d" x="0" y="0" width="44"
+                                                                height="44" filterUnits="userSpaceOnUse"
+                                                                color-interpolation-filters="sRGB">
+                                                                <feFlood flood-opacity="0" result="BackgroundImageFix">
+                                                                </feFlood>
+                                                                <feColorMatrix in="SourceAlpha"
+                                                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0">
+                                                                </feColorMatrix>
+                                                                <feOffset dy="6"></feOffset>
+                                                                <feGaussianBlur stdDeviation="3"></feGaussianBlur>
+                                                                <feColorMatrix
+                                                                    values="0 0 0 0 0 0 0 0 0 0.713726 0 0 0 0 0.952941 0 0 0 0.2 0">
+                                                                </feColorMatrix>
+                                                                <feBlend in2="BackgroundImageFix"
+                                                                    result="effect1_dropShadow"></feBlend>
+                                                                <feBlend in="SourceGraphic" in2="effect1_dropShadow"
+                                                                    result="shape"></feBlend>
+                                                            </filter>
+                                                        </defs>
+                                                    </svg>
+                                                </div>
+                                                <div class="plan-destination">
+                                                    <div class="wrapper-plan-destination">
+                                                        <div class="title-Community12" style="text-align: left;">Đến
+                                                        </div>
+                                                        <div class="wrapper-geographical-destination"
+                                                            style="position: relative;">
+                                                            <div class="title-Community14 geographical-destination"
+                                                                style="opacity: 0; font-weight: bold;">
+                                                            </div>
+                                                            <div class=" wrapper-input-geographical-destination"
+                                                                style="opacity: 1; font-weight: bold;">
+                                                                <input type=" text" id="geographical-destination"
+                                                                    class="input-geographical" autocomplete="off"
+                                                                    placeholder="Thành phố, sân bây trong nước quốc tế">
+                                                            </div>
+    
+                                                        </div>
+                                                       
+                                                    </div>
+    
+                                                </div>
+                                                <div class="plane-date flex-align" style="border-left: 1px solid #e2e8f0;">
+                                                    <div class="plane-time flex-align">
+                                                        <div class="time-plane-depart title-Community12">
+                                                            Ngày đi
+                                                            <div class="title-Community14">T7, 22 tháng 2</div>
+                                                        </div>
+                                                        <div class="title-Community12 time-plane-lading">
+                                                            Ngày về
+                                                            <div class="round-trip" style="position: absolute; top: -12px;">
+                                                                <div class="toggle-round-trip flex-align">
+                                                                    <div class="flex-center">
+                                                                        <input type="checkbox" name="checked"
+                                                                            class="vnt1673" id="">
+                                                                        <span class="toggle-plane"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <span class="vnt1158"></span>
+                                                            </div>
+                                                            <div class="title-Community14">
+                                                                <span style="color: #718096;">Chọn ngày về</span>
+                                                            </div>
+    
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="guest-plane" style="border-left: 1px solid #e2e8f0;">
+                                                    <div class="flex-align" style="margin-left: 24px; position: relative;">
+                                                        <div class="seat-class-guest">
+                                                            <span class="title-Community12 vnt12">Số khách, hạng ghế</span>
+                                                            <div class="title-Community14 vnt13">1 khách, phổ thông, phổ
+                                                                thông đặc biệt</div>
+                                                        </div>
+                                                    </div>
+    
+                                                </div>
+                                                <button class="btn-serach flex-align btn-serach-container serach-contents">
+                                                    <span class="serach-label flex-align">
+                                                        <svg width="23" height="24" fill="none" class="svgFillAll"
+                                                            style="stroke: white;">
+                                                            <path
+                                                                d="M21.312 22.5l-4.742-4.742m2.71-7.451a8.806 8.806 0 11-17.613 0 8.806 8.806 0 0117.613 0z"
+                                                                stroke="#fff" stroke-width="3" stroke-linecap="round"
+                                                                stroke-linejoin="round"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="serach-label_wrrapper"></span>
+                                                </button>
+    
+    
+    
+                                                <div class="sub-navigation navigation-hotel flex" style="height: 0;">
+    
+                                                </div>
+                                                <div class="sub-navigation date-rent flex" style="height: 0;">
+    
+                                                </div>
+                                                <div class="sub-navigation number_room-number-people" id="roomWrapper"
+                                                    style="height: 0;">
+                                                </div>
+    
+                                            </div>
+                `;
+                navigationWrapper.appendChild(planTransitions);
+            }
+            resolve();
+        });
+    }
+    plane.addEventListener("click", () => {
+        const subNavHotel = document.querySelector(".place-nav-footer");
+        if (subNavHotel) subNavHotel.remove();
+
+        createSubNavigationWrrapperPlane();
+
+        setTimeout(() => {
+            const planeNav = document.querySelector(".vnt354");
+            if (planeNav) {
+                planeNav.appendChild(borderLine);
+            }
+        }, 10);
+    })
+    hotel.addEventListener("click", () => {
+        const subNavPlane = document.querySelector(".plan-transitions");
+        if (subNavPlane) subNavPlane.remove();
+
+        createSubNavigationWrrapperHotel();
+        setTimeout(() => {
+            const hotelNav = document.querySelector(".vnt353");
+            if (hotelNav) {
+                hotelNav.appendChild(borderLine);
+            }
+        }, 10);
+    })
+
+    createSubNavigationWrrapperHotel().then(() => {
+        handleSubNavigation();
+    });
+
+
+
     const placeHotel = document.querySelector(".place-hotel");
     const subHotel = document.querySelector(".navigation-hotel");
     const dateRent = document.querySelector(".date-nav-footer");
     const timeRent = document.querySelector(".date-rent");
     const guest = document.querySelector(".number-peoples");
     const numberRooms = document.querySelector(".number_room-number-people");
-    const navigationWrapper = document.querySelector(".vnt203");
-
-    function createSubNavigationWrrapperHotel() {
-        if (!navigationWrapper.contains(document.querySelector(".place-nav-footer"))) {
-            const placeFooter = document.createElement("div");
-            placeFooter.classList.add("place-nav-footer", "flex-align");
-            placeFooter.innerHTML = `
-                 <div class="place-hotel flex-column">
-                                        <span class="hotel">Địa điểm</span>
-                                        <div class="input-hotel">
-                                            <input id="input-note-hotel" type="text"
-                                                class="note-hotel base-note-hotel"
-                                                placeholder="Địa điểm, khách sạn trong nước">
-                                        </div>
-                                    </div>
-                                    <div class="vertical-line"></div>
-                                    <div class="date-nav-footer flex-align">
-                                        <div class="date-go  flex-column">
-                                            <span class="title-contrainer">Ngày đến</span>
-                                            <span class="title-content">Chọn ngày đi</span>
-                                        </div>
-                                        <div class="icon-date-nav flex-align">
-                                            <svg width="10" height="9" fill="none" style="margin-left: 2px;">
-                                                <path
-                                                    d="M4.982.504h.173A3.319 3.319 0 008.66 6.01 3.982 3.982 0 114.982.5v.004z"
-                                                    stroke="#718096" stroke-linecap="round" stroke-linejoin="round">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div class="date-backHome  flex-column">
-                                            <span class="title-contrainer">Ngày về</span>
-                                            <span class="title-content">Chọn ngày về</span>
-                                        </div>
-                                    </div>
-                                    <div class="vertical-line"></div>
-                                    <div class="number-peoples flex-align">
-                                        <div class="number-people  flex-column">
-                                            <span class="title-contrainer">Số phòng, số khách</span>
-                                            <span class="title-content vnt123">1 phòng, 1 người lớn, 0 trẻ em</span>
-                                        </div>
-                                        <button class="btn-serach flex-align btn-serach-container serach-contents">
-                                            <span class="serach-label flex-align">
-                                                <svg width="23" height="24" fill="none" class="svgFillAll"
-                                                    style="stroke: white;">
-                                                    <path
-                                                        d="M21.312 22.5l-4.742-4.742m2.71-7.451a8.806 8.806 0 11-17.613 0 8.806 8.806 0 0117.613 0z"
-                                                        stroke="#fff" stroke-width="3" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                </svg>
-                                            </span>
-                                            <span class="serach-label_wrrapper"></span>
-                                        </button>
-                                    </div>
-                                    <div class="vertical-line" style="width: 0;"></div>
-                                    <div class="sub-navigation navigation-hotel flex" style="height: 0;">
-                                    </div>
-                                    <div class="sub-navigation date-rent flex" style="height: 0;">
-
-                                    </div>
-                                    <div class="sub-navigation number_room-number-people" id="roomWrapper"
-                                        style="height: 0;">
-                                    </div>
-            `
-            navigationWrapper.appendChild(placeFooter);
-        }
-    }
-    window.addEventListener("load", () => {
-        createSubNavigationWrrapperHotel();
-    })
-
-
-
 
 
 
@@ -496,11 +705,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         return [];
     }
-    document.querySelector(".serach-label_wrrapper").addEventListener("click", () => {
-        localStorage.removeItem("selectedDates");
-        updateSelectedDatesUI();
-        window.location.reload();
-    })
 
     function updateSelectedDatesUI() {
         let selectedDates = getSelectedDates();
@@ -809,10 +1013,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
     function runFunctions() {
 
-        handleSubNavigation();
 
         waitForElement(".wrapper-number-room", handleRooms);
 
