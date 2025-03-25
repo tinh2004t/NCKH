@@ -27,12 +27,13 @@ body {
 .top-header {
     height: 56px;
     justify-content: space-between;
-    padding-top: 6px;
+    padding-top: 12px;
 }
 
 .image-logo_top_left {
-    width: 143px;
-    height: 35px;
+    width: 200px;
+    height: 50px;
+    object-fit: cover;
 }
 
 .top-left-title {
@@ -398,7 +399,8 @@ body {
     gap: 4px;
 }
 
-.number-peoples {
+.number-peoples,
+.vnt204 {
     justify-content: space-between;
     width: calc(100% - 785px);
     padding: 8px 8px 8px 20px;
@@ -554,6 +556,9 @@ body {
 .date-rent {
     width: 805px;
     left: 385px;
+}
+
+.vnt2061 {
     padding: 16px 16px 24px 16px;
 }
 
@@ -599,6 +604,22 @@ body {
 .number_room-number-people {
     right: 180px;
     width: 214px;
+}
+
+.number-guest {
+    width: 374px;
+    right: 20px;
+    transition: all .3s ease-in;
+}
+
+.wrapper-number-geust {
+    width: 100%;
+    height: 100%;
+}
+
+.vnt201 {
+    height: 224px;
+    transition: all .3s ease-in;
 }
 
 .number-room-people {
@@ -1027,13 +1048,19 @@ body {
     position: relative;
 }
 
+.image-logo_top_leff {
+    width: 165px;
+    object-fit: cover;
+    height: 44px;
+}
+
 .band-image {
-    width: 174px;
-    height: 46px;
+    width: 220px;
+    height: 40px;
     object-fit: cover;
     position: absolute;
     top: 0;
-    left: 0;
+    left: -16px;
 }
 
 .btn-moreBtn-band {
@@ -1422,6 +1449,7 @@ body {
     flex-direction: column;
     margin: 0 auto;
     max-width: 1200px;
+    position: relative;
 }
 
 .wrapper-geographical-start {
@@ -1626,7 +1654,7 @@ body {
 }
 
 .sub-plane {
-    top: 64px;
+    top: 66px;
     position: absolute;
     background-color: #fff;
     border: 1px solid #e2e8f0;
@@ -1652,4 +1680,80 @@ body {
 
 .vnt126 .vnt127:hover {
     color: #ff3366;
+}
+
+.cotents-guest-seat {
+    color: #1a202c;
+    width: 100%;
+    padding: 16px;
+}
+
+.content-guest-seat {
+    flex-wrap: wrap;
+    width: calc(100% + 24px);
+    margin: -12px;
+}
+
+.content-guest-seat-much {
+    padding: 12px;
+    flex-basis: 50%;
+}
+
+.vnt122 {
+    border-bottom: 1px solid #edf2f7;
+    padding: 10px 8px;
+    justify-content: space-between;
+    margin: 0 -8px 8px;
+}
+
+.vnt126 {
+    text-align: left;
+}
+
+.title-seat {
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.vnt127 {
+    cursor: pointer;
+    padding: 10px 0;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.vnt128 {
+    flex-basis: 83.33333%;
+    max-width: 83.33333%;
+}
+
+.vnt130 {
+    max-width: 16.66667%;
+    flex-basis: 16.66667%;
+
+}
+
+.vnt19 {
+    width: 100%;
+    cursor: pointer;
+    padding: 10px 16px;
+    transition: all .3s;
+    border-bottom: 1px solid #edf2f7;
+    border-radius: 8px;
+}
+
+.vnt191 {
+    width: 40px;
+    height: 40px;
+    background-color: #f1f3f5;
+    border-radius: 8px;
+}
+
+.vnt192 {
+    width: calc(100% - 40px);
+    margin-left: 14px;
+    justify-content: space-between;
+}
+
+.vnt1921 {
+    gap: 2px;
 }
