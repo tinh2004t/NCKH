@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let arrowDiv;
     let lineHidden;
     let isArrow = false;
+    let currentSection = "";
     const chatHidden = document.querySelector(".container-chat-hidden");
     const itemHelpChat = document.querySelector(".item-help-chat");
 
@@ -67,6 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function createSubNavigationWrrapperHotel() {
         return new Promise((resolve) => {
+            currentSection = "hotel";
+
             const navigationWrapper = document.querySelector(".vnt203");
             if (!navigationWrapper.contains(document.querySelector(".vnt357"))) {
                 const placeFooter = document.createElement("div");
@@ -103,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         <div class="number-peoples flex-align">
                                             <div class="number-people  flex-column">
                                                 <span class="title-contrainer">Số phòng, số khách</span>
-                                                <span class="title-content vnt123">1 phòng, 1 người lớn, 0 trẻ em</span>
+                                                <span class="title-content vnt123">1 phòng, 1 người lớn</span>
                                             </div>
                                             <button class="btn-serach flex-align btn-serach-container serach-contents">
                                                 <span class="serach-label flex-align">
@@ -161,6 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     function createSubNavigationWrrapperPlane() {
         return new Promise((resolve) => {
+            currentSection = "plane";
+            console.log(currentSection);
             const navigationWrapper = document.querySelector(".vnt203");
             if (!navigationWrapper.contains(document.querySelector(".plan-transitions"))) {
                 const planTransitions = document.createElement("div");
@@ -255,11 +260,11 @@ document.addEventListener("DOMContentLoaded", () => {
                                                 </div>
                                                 <div class="plane-date flex-align" style="border-left: 1px solid #e2e8f0;">
                                                     <div class="plane-time flex-align">
-                                                        <div class="time-plane-depart title-Community12">
+                                                        <div class="time-plane-depart title-Community12 date-go">
                                                             Ngày đi
-                                                            <div class="title-Community14">T7, 22 tháng 2</div>
+                                                            <div class="title-Community14 title-content"></div>
                                                         </div>
-                                                        <div class="title-Community12 time-plane-lading">
+                                                        <div class="title-Community12 time-plane-lading date-backHome">
                                                             Ngày về
                                                             <div class="round-trip" style="position: absolute; top: -12px;">
                                                                 <div class="toggle-round-trip flex-align">
@@ -271,7 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                                                 </div>
                                                                 <span class="vnt1158"></span>
                                                             </div>
-                                                            <div class="title-Community14">
+                                                            <div class="title-Community14 title-content">
                                                                 <span style="color: #718096;">Chọn ngày về</span>
                                                             </div>
     
@@ -307,6 +312,19 @@ document.addEventListener("DOMContentLoaded", () => {
                                             </div>
                 `;
                 navigationWrapper.appendChild(planTransitions);
+                if (currentSection === "plane") {
+                    const toDay = new Date();
+                    const weeks = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+                    const dayOfMonth = toDay.getDate();
+                    const month = toDay.getMonth() + 1;
+                    const dayOfWeek = weeks[toDay.getDay()];
+                    const title = document.querySelector(".title-Community14.title-content");
+                    if (title) {
+                        title.innerHTML = `${dayOfWeek},${dayOfMonth} tháng ${month}`
+                    }
+                    const todayISO = toDay.toISOString();
+                    localStorage.setItem("departureDate", todayISO);
+                }
             }
             resolve();
         });
@@ -472,7 +490,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-
     function handleSubNavigationPlane() {
         const wrapperGeographical = document.querySelector(".wrapper-geographical-start");
         const planeEnd = document.querySelector(".wrapper-plan-destination")
@@ -480,29 +497,166 @@ document.addEventListener("DOMContentLoaded", () => {
         const titlePlaneEnd = document.querySelector(".wrapper-input-geographical-destination")
         const wrapperInputGeographical = document.querySelector(".wrapper-input-geographical")
         const inputGeographical = document.querySelector(".input-geographical");
-        const dateRent = document.querySelector(".plane-date");
+        const datePlaneReturn = document.querySelector(".plane-date .plane-time");
         const timeRent = document.querySelector(".vnt206");
         const seatGuests = document.querySelector(".guest-plane");
 
 
-        dateRent.addEventListener("click", () => {
-
+        datePlaneReturn.addEventListener("click", () => {
             const guestSeat = document.querySelector(".guest-seat");
             if (subPlaneEnd || subPlane || guestSeat) {
                 removeSubPlane();
                 if (guestSeat) guestSeat.remove();
             }
 
+            localStorage.removeItem("departureDate");
+
             togglePlane.classList.toggle("active");
             backgroundPlane.classList.toggle("active");
+
+            timeRent.innerHTML = "";
             timeRent.style.height = "430px";
-            timeRent.classList.add("opacity-block");
-            timeRent.classList.add("vnt2061");
+            timeRent.classList.add("opacity-block", "vnt2061");
+
             createSubNavigationCalendar(timeRent);
+
             setTimeout(() => {
-                updateSelectedDatesUI();
+                const today = new Date();
+                const todaySelector = `.day-number[data-day='${today.getDate()}'][data-month='${today.getMonth()}'][data-year='${today.getFullYear()}']`;
+                const todayElement = document.querySelector(todaySelector);
+
+                let clickCount = 0;
+                let departureDate = null;
+
+                if (todayElement) {
+                    todayElement.style.background = "#ff3366";
+                    todayElement.style.color = "#fff";
+                    todayElement.style.borderRadius = "6px";
+                    todayElement.classList.add("suggested-date");
+                }
+
+                document.querySelectorAll(".day-number").forEach(day => {
+                    const d = new Date(
+                        parseInt(day.getAttribute("data-year")),
+                        parseInt(day.getAttribute("data-month")),
+                        parseInt(day.getAttribute("data-day"))
+                    );
+
+                    if (d < today.setHours(0, 0, 0, 0)) {
+                        day.style.background = "#fff";
+                        day.style.color = "#999";
+                        day.classList.add("past-date");
+                    }
+
+                    day.addEventListener("mouseenter", () => {
+                        if (!day.classList.contains("selected-date") && !day.classList.contains("past-date")) {
+                            day.style.border = "1px solid #ff3366";
+                            day.style.borderRadius = "6px";
+                        }
+                    });
+
+                    day.addEventListener("mouseleave", () => {
+                        if (!day.classList.contains("selected-date") && !day.classList.contains("past-date")) {
+                            day.style.border = "none";
+                        }
+                    });
+
+                    day.addEventListener("click", () => {
+                        const dDay = parseInt(day.getAttribute('data-day'));
+                        const dMonth = parseInt(day.getAttribute('data-month'));
+                        const dYear = parseInt(day.getAttribute('data-year'));
+                        const selectedDate = new Date(dYear, dMonth, dDay);
+
+                        if (day.classList.contains("past-date")) return;
+
+                        clickCount++;
+
+                        if (clickCount === 1) {
+                            departureDate = selectedDate;
+                            localStorage.setItem("departureDate", selectedDate.toISOString());
+
+                            const suggested = document.querySelector(".suggested-date");
+                            if (suggested && !suggested.classList.contains("past-date")) {
+                                suggested.style.background = "#fff";
+                                suggested.style.color = "#000";
+                                suggested.classList.remove("suggested-date");
+                            }
+
+                            document.querySelectorAll(".day-number").forEach(d => {
+                                d.style.border = "none";
+                                d.classList.remove("selected-date");
+                                const span = d.querySelector(".date-label");
+                                if (span) span.remove();
+                            });
+
+                            day.classList.add("selected-date");
+                            day.style.background = "#ff3366";
+                            day.style.color = "#fff";
+                            day.style.borderRadius = "6px 0 0 6px";
+
+                            const label = document.createElement("span");
+                            label.textContent = "Ngày đi";
+                            label.className = "date-label";
+                            label.style.cssText = "font-size:7px;line-height:8px;position:absolute;top:4px;";
+                            day.appendChild(label);
+                        }
+
+                        else if (clickCount === 2) {
+                            const returnDate = selectedDate;
+                            const first = departureDate < returnDate ? departureDate : returnDate;
+                            const second = departureDate < returnDate ? returnDate : departureDate;
+
+                            document.querySelectorAll(".day-number").forEach(d => {
+                                const dDay = parseInt(d.getAttribute('data-day'));
+                                const dMonth = parseInt(d.getAttribute('data-month'));
+                                const dYear = parseInt(d.getAttribute('data-year'));
+                                const current = new Date(dYear, dMonth, dDay);
+
+                                const span = d.querySelector(".date-label");
+                                if (span) span.remove();
+
+                                if (current.getTime() === first.getTime()) {
+                                    d.style.background = "#ff3366";
+                                    d.style.color = "#fff";
+                                    d.style.borderRadius = "6px 0 0 6px";
+                                    d.classList.add("selected-date");
+
+                                    const label = document.createElement("span");
+                                    label.textContent = "Ngày đi";
+                                    label.className = "date-label";
+                                    label.style.cssText = "font-size:7px;line-height:8px;position:absolute;top:4px;";
+                                    d.appendChild(label);
+                                } else if (current.getTime() === second.getTime()) {
+                                    d.style.background = "#ff3366";
+                                    d.style.color = "#fff";
+                                    d.style.borderRadius = "0 6px 6px 0";
+                                    d.classList.add("selected-date");
+
+                                    const label = document.createElement("span");
+                                    label.textContent = "Ngày về";
+                                    label.className = "date-label";
+                                    label.style.cssText = "font-size:7px;line-height:8px;position:absolute;top:4px;";
+                                    d.appendChild(label);
+                                } else if (current > first && current < second) {
+                                    d.style.border = "1px solid #ff3366";
+                                    d.style.borderRadius = "6px";
+                                    d.classList.add("selected-date");
+                                }
+                            });
+
+                            seatGuests.click();
+                        }
+                    });
+                });
+
             }, 50);
-        })
+        });
+
+
+
+
+
+
 
 
         wrapperGeographical.addEventListener("click", () => {
@@ -992,7 +1146,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     !wrapperSubPlaneEnd.contains(e.target) &&
                     !subPlane?.contains(e.target) &&
                     !subPlaneEnd?.contains(e.target) &&
-                    !dateRent.contains(e.target) &&
+                    !datePlaneReturn.contains(e.target) &&
                     !timeRent.contains(e.target) &&
                     !seatGuests.contains(e.target) &&
                     !(guestSeat && guestSeat.contains(e.target))
@@ -1019,6 +1173,8 @@ document.addEventListener("DOMContentLoaded", () => {
             timeRent.appendChild(claendar);
 
             document.dispatchEvent(new Event("calendarReady"));
+            attachDayClickEvent();
+
         }
     }
 
@@ -1175,16 +1331,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                                     </span>
                                                     <div class="title-Community12 vnt2010">1 phòng, 2 người lớn</div>
                                                 </div>
-                                                <div class="content-room vnt1022 flex-align vn1023"
-                                                    style="border-bottom:1px solid rgb(226, 232, 240); background-color:inherit; justify-content: space-between;">
-                                                    <span>
-                                                        Đi theo gia đình
-                                                    </span>
-                                                    <svg width="8" height="14" fill="none">
-                                                        <path d="M1 1l6 6-6 6" stroke="#718096" stroke-width="1.5"
-                                                            stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </div>
+                                              
                                             </div>
                 `;
                 numberRooms.appendChild(numberRoom);
@@ -1293,19 +1440,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 timeRent.classList.remove("opacity-block");
                 timeRent.innerHTML = "";
 
-                numberRooms.style.height = "182px";
+                numberRooms.style.height = "128px";
                 numberRooms.classList.add("opacity-block");
 
                 createSubNavigationNumberRomms();
 
-                createBlur(guest);
 
                 setTimeout(() => {
+                    handleRooms();
+
+                    createBlur(guest);
+
                     if (activeBlur) {
                         activeBlur.classList.add("action-line-blur3");
                     }
-                }, 50);
+                }, 0);
 
+            } else {
+                const selectedRoom = localStorage.getItem("selectedRoom");
+                if (selectedRoom) {
+                    updateVnt123();
+                }
+
+                numberRooms.style.height = "128px";
+                numberRooms.classList.add("opacity-block");
+
+                createSubNavigationNumberRomms();
+                setTimeout(() => {
+                    handleRooms();
+                }, 0)
             }
         });
 
@@ -1338,8 +1501,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     numberRooms.classList.remove("opacity-block");
                     numberRooms.innerHTML = "";
                     waitForElement(".wrapper-number-room", handleRooms);
-
-                    waitForElement(".wrapper-number-room", targetFamily);
                 }
 
                 removeBlur();
@@ -1704,40 +1865,144 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateSelectedDatesUI() {
+        console.log("currentSection:", currentSection);
         let selectedDates = getSelectedDates();
-        if (selectedDates.length !== 2) return;
+        if (currentSection === "hotel") {
 
-        let [firstDayObj, secondDayObj] = selectedDates;
-        let firstDateObj = firstDayObj.dateObj;
-        let secondDateObj = secondDayObj.dateObj;
+            if (selectedDates.length !== 2) return;
 
-        document.querySelectorAll(".day-number").forEach(d => {
-            let dDay = parseInt(d.getAttribute("data-day"));
-            let dMonth = parseInt(d.getAttribute("data-month")) - 1;
-            let dYear = parseInt(d.getAttribute("data-year"));
+            let [firstDayObj, secondDayObj] = selectedDates;
+            let firstDateObj = firstDayObj.dateObj;
+            let secondDateObj = secondDayObj.dateObj;
 
-            let dDate = new Date(dYear, dMonth, dDay);
+            document.querySelectorAll(".day-number").forEach(d => {
+                let dDay = parseInt(d.getAttribute("data-day"));
+                let dMonth = parseInt(d.getAttribute("data-month")) - 1;
+                let dYear = parseInt(d.getAttribute("data-year"));
 
-            if (dDate >= firstDateObj && dDate <= secondDateObj) {
-                d.style.background = "rgba(255,51,102,.1)";
-                d.style.borderRadius = "0";
-                d.classList.add("selected-date");
+                let dDate = new Date(dYear, dMonth, dDay);
+
+                if (dDate >= firstDateObj && dDate <= secondDateObj) {
+                    d.style.background = "rgba(255,51,102,.1)";
+                    d.style.borderRadius = "0";
+                    d.classList.add("selected-date");
+                }
+
+                if (dDate.getTime() === firstDateObj.getTime()) {
+                    d.style.borderRadius = "40px 0 0 40px";
+                }
+                if (dDate.getTime() === secondDateObj.getTime()) {
+                    d.style.borderRadius = "0 40px 40px 0";
+                }
+            });
+            setTimeout(() => {
+                const guest = document.querySelector(".number-peoples");
+                if (guest) {
+                    if (activeSection = "guest") {
+                        setTimeout(() => {
+                            guest.click();
+                        }, 0)
+                    }
+                }
+            }, 100);
+        }
+        else if (currentSection === "plane") {
+            console.log("đang hoạt động plane")
+            if (selectedDates.length === 1) {
+                console.log("ngày đi", selectedDates);
+                const firstDateObj = new Date(selectedDates[0].dateObj);
+
+                document.querySelectorAll(".day-number").forEach(d => {
+                    const dDay = parseInt(d.getAttribute("data-day"));
+                    const dMonth = parseInt(d.getAttribute("data-month")) - 1;
+                    const dYear = parseInt(d.getAttribute("data-year"));
+
+                    const dDate = new Date(dYear, dMonth, dDay);
+
+                    // Làm sạch span cũ nếu có
+                    const oldSpan = d.querySelector(".date-label");
+                    if (oldSpan) oldSpan.remove();
+
+                    // Ngày đi (lấy từ localStorage)
+                    if (dDate.getTime() === firstDateObj.getTime()) {
+                        d.style.background = "#ff3366";
+                        d.style.color = "#fff";
+                        d.style.borderRadius = "6px 0 0 6px";
+                        d.classList.add("selected-date");
+
+                        const spanTag = document.createElement("span");
+                        spanTag.textContent = "Ngày đi";
+                        spanTag.className = "date-label";
+                        spanTag.style.fontSize = "7px";
+                        spanTag.style.lineHeight = "8px";
+                        spanTag.style.position = "absolute";
+                        spanTag.style.top = "4px";
+
+                        d.appendChild(spanTag);
+                    }
+                });
             }
 
-            if (dDate.getTime() === firstDateObj.getTime()) {
-                d.style.borderRadius = "40px 0 0 40px";
+            // Khi đã có ngày đi và vừa chọn thêm ngày về
+            if (selectedDates.length === 2) {
+                const [firstDayObj, secondDayObj] = selectedDates;
+                const firstDateObj = new Date(firstDayObj.dateObj);
+                const secondDateObj = new Date(secondDayObj.dateObj);
+
+                document.querySelectorAll(".day-number").forEach(d => {
+                    const dDay = parseInt(d.getAttribute("data-day"));
+                    const dMonth = parseInt(d.getAttribute("data-month")) - 1;
+                    const dYear = parseInt(d.getAttribute("data-year"));
+                    const dDate = new Date(dYear, dMonth, dDay);
+
+                    const oldSpan = d.querySelector(".date-label");
+                    if (oldSpan) oldSpan.remove();
+
+                    // Ngày giữa
+                    if (dDate > firstDateObj && dDate < secondDateObj) {
+                        d.style.background = "rgba(255,51,102,0.1)";
+                        d.style.borderRadius = "0";
+                        d.classList.add("selected-date");
+                    }
+
+                    // Ngày đi
+                    if (dDate.getTime() === firstDateObj.getTime()) {
+                        d.style.background = "#ff3366";
+                        d.style.color = "#fff";
+                        d.style.borderRadius = "6px 0 0 6px";
+                        d.classList.add("selected-date");
+
+                        const spanTag = document.createElement("span");
+                        spanTag.textContent = "Ngày đi";
+                        spanTag.className = "date-label";
+                        spanTag.style.fontSize = "7px";
+                        spanTag.style.lineHeight = "8px";
+                        spanTag.style.position = "absolute";
+                        spanTag.style.top = "4px";
+
+                        d.appendChild(spanTag);
+                    }
+
+                    // Ngày về
+                    if (dDate.getTime() === secondDateObj.getTime()) {
+                        d.style.background = "#ff3366";
+                        d.style.color = "#fff";
+                        d.style.borderRadius = "0 6px 6px 0";
+                        d.classList.add("selected-date");
+
+                        const spanTag = document.createElement("span");
+                        spanTag.textContent = "Ngày về";
+                        spanTag.className = "date-label";
+                        spanTag.style.fontSize = "7px";
+                        spanTag.style.lineHeight = "8px";
+                        spanTag.style.position = "absolute";
+                        spanTag.style.top = "4px";
+
+                        d.appendChild(spanTag);
+                    }
+                });
             }
-            if (dDate.getTime() === secondDateObj.getTime()) {
-                d.style.borderRadius = "0 40px 40px 0";
-            }
-        });
-        setTimeout(() => {
-            const guest = document.querySelector(".number-peoples");
-            console.log(guest);
-            if (guest) {
-                guest.click();
-            }
-        }, 100);
+        }
     }
 
 
@@ -1796,7 +2061,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn("Không tìm thấy phần tử .day-number để gắn sự kiện.");
             return;
         }
-
         days.forEach(day => {
             day.addEventListener("click", function () {
                 const dayValue = parseInt(day.getAttribute("data-day"));
@@ -1806,8 +2070,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 handleDayClick(dayValue, monthValue, yearValue);
             });
         });
-
-        console.log("Đã gắn sự kiện click vào các ngày.");
     }
     function handleDayClick(day, month, year) {
         let selectedDates = getSelectedDates();
@@ -1824,17 +2086,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (selectedDates.length === 2) {
             setTimeout(() => {
                 const guest = document.querySelector(".number-peoples");
-                console.log("Đã chọn đủ 2 ngày, chuyển sang phần chọn phòng:", guest);
                 if (guest) {
                     guest.click();
                 }
             }, 100);
         }
     }
-    document.addEventListener("calendarReady", function () {
-        console.log("Lịch đã sẵn sàng, gắn sự kiện click vào các ngày...");
-        attachDayClickEvent();
-    });
     function waitForElement(selector, callback) {
         const element = document.querySelector(selector);
         if (element) {
@@ -1843,7 +2100,6 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => waitForElement(selector, callback), 100);
         }
     }
-
 
     function handleRooms() {
         const wrapper = document.querySelector(".wrapper-number-room");
@@ -1854,6 +2110,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!oneSelfOption) {
             return;
+        }
+
+        let selectedRoom = localStorage.getItem("selectedRoom");
+        contentRooms.forEach((r) => {
+            r.classList.remove("b-left");
+            r.style.backgroundColor = "inherit";
+        });
+
+        let matched = false;
+        contentRooms.forEach((room) => {
+            if (room.innerText.trim() === selectedRoom) {
+                room.classList.add("b-left");
+                room.style.backgroundColor = "#fff";
+                matched = true;
+            }
+        });
+
+        if (!matched && oneSelfOption) {
+            oneSelfOption.classList.add("b-left");
+            oneSelfOption.style.backgroundColor = "#fff";
         }
 
         contentRooms.forEach((room) => {
@@ -1867,6 +2143,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 this.classList.add("b-left");
                 this.style.backgroundColor = "#fff";
+
+                localStorage.setItem("selectedRoom", this.innerText.trim());
+
+                setTimeout(() => {
+                    updateVnt123();
+                }, 100);
             });
         });
 
@@ -1876,160 +2158,31 @@ document.addEventListener("DOMContentLoaded", () => {
                     r.classList.remove("b-left");
                     r.style.backgroundColor = "inherit";
                 });
-
                 oneSelfOption.classList.add("b-left");
                 oneSelfOption.style.backgroundColor = "#fff";
             }
         });
     }
+    function updateVnt123() {
+        const vnt123 = document.querySelector(".vnt123");
+        const subNav = document.querySelector(".number_room-number-people.vnt207");
+        const lineBlur = document.querySelector(".line-blur, .action-line-blur3");
+        if (!vnt123) return;
 
+        const selectedRoom = document.querySelector(".b-left .title-Community12")?.innerText || "1 phòng, 1 người lớn";
 
+        vnt123.innerText = selectedRoom;
 
+        if (subNav) {
+            subNav.classList.remove("opacity-block");
+        }
 
-    function targetFamily() {
-        const familyOption = document.querySelector(".vn1023");
-        const extraRooms = document.querySelectorAll(".vnt1021");
-        const roomWrapper = document.querySelector(".wrapper-number-room");
+        if (lineBlur) {
+            lineBlur.classList.remove("line-blur", "action-line-blur3");
+        }
 
-        familyOption.addEventListener("click", (e) => {
-            let extraRoomWrapper = document.querySelector(".wrapper-number-room-extra");
-
-            if (!extraRoomWrapper) {
-                extraRoomWrapper = document.createElement("div");
-                extraRoomWrapper.classList.add("wrapper-number-room-extra");
-
-                extraRoomWrapper.innerHTML = `
-            <div class="numbers-extra flex-align">
-                                      <span> Phòng</span>
-                                      <div class="number-of-people flex-align">
-                                          <button class="box-quanlity minus-people">
-                                              <div class="flex-center">
-                                                  <svg width="16" height="16" fill="none"
-                                                      class="svgFillAll"
-                                                      style="stroke: rgb(203, 213, 224);">
-                                                      <path d="M3.333 8h9.334" stroke="#cdd7e1"
-                                                          stroke-width="1.5" stroke-linecap="round"
-                                                          stroke-linejoin="round"></path>
-                                                  </svg>
-                                              </div>
-                                          </button>
-                                          <span class="title-Community16"
-                                              style="width: 24px; padding: 0 24px;">1</span>
-                                          <button class="box-quanlity plus-people">
-                                              <div class="flex-center">
-                                                  <svg width="12" height="15" class="svgFillAll"
-                                                      style="stroke: rgb(255, 51, 102);">
-                                                      <g fill="#ff3366" stroke="#ff3366"
-                                                          fill-rule="evenodd">
-                                                          <path d="M.5 7.192h11v1H.5z"></path>
-                                                          <path d="M6.357 13.049h-.714v-11h.714v11z">
-                                                          </path>
-                                                      </g>
-                                                  </svg>
-                                              </div>
-                                          </button>
-                                      </div>
-                                  </div>
-          <div class="numbers-extra flex-align">
-                                      <span> Người lớn </span>
-                                      <div class="number-of-people flex-align">
-                                          <button class="box-quanlity minus-people">
-                                              <div class="flex-center">
-                                                  <svg width="16" height="16" fill="none"
-                                                      class="svgFillAll"
-                                                      style="stroke: rgb(203, 213, 224);">
-                                                      <path d="M3.333 8h9.334" stroke="#ff3366"
-                                                          stroke-width="1.5" stroke-linecap="round"
-                                                          stroke-linejoin="round"></path>
-                                                  </svg>
-                                              </div>
-                                          </button>
-                                          <span class="title-Community16"
-                                              style="width: 24px; padding: 0 24px;">2</span>
-                                          <button class="box-quanlity plus-people">
-                                              <div class="flex-center">
-                                                  <svg width="12" height="15" class="svgFillAll"
-                                                      style="stroke: rgb(255, 51, 102);">
-                                                      <g fill="#ff3366" stroke="#ff3366"
-                                                          fill-rule="evenodd">
-                                                          <path d="M.5 7.192h11v1H.5z"></path>
-                                                          <path d="M6.357 13.049h-.714v-11h.714v11z">
-                                                          </path>
-                                                      </g>
-                                                  </svg>
-                                              </div>
-                                          </button>
-                                      </div>
-                                  </div>
-          <div class="numbers-extra flex-align">
-                                      <span> Trẻ em</span>
-                                      <div class="number-of-people flex-align">
-                                          <button class="box-quanlity minus-people">
-                                              <div class="flex-center">
-                                                  <svg width="16" height="16" fill="none"
-                                                      class="svgFillAll"
-                                                      style="stroke: rgb(203, 213, 224);">
-                                                      <path d="M3.333 8h9.334" stroke="#cdd7e1"
-                                                          stroke-width="1.5" stroke-linecap="round"
-                                                          stroke-linejoin="round"></path>
-                                                  </svg>
-                                              </div>
-                                          </button>
-                                          <span class="title-Community16"
-                                              style="width: 24px; padding: 0 24px;">0</span>
-                                          <button class="box-quanlity plus-people">
-                                              <div class="flex-center">
-                                                  <svg width="12" height="15" class="svgFillAll"
-                                                      style="stroke: rgb(255, 51, 102);">
-                                                      <g fill="#ff3366" stroke="#ff3366"
-                                                          fill-rule="evenodd">
-                                                          <path d="M.5 7.192h11v1H.5z"></path>
-                                                          <path d="M6.357 13.049h-.714v-11h.714v11z">
-                                                          </path>
-                                                      </g>
-                                                  </svg>
-                                              </div>
-                                          </button>
-                                      </div>
-                                  </div>
-        `;
-
-                roomWrapper.after(extraRoomWrapper);
-            }
-
-            const wrapper = document.getElementById("roomWrapper");
-            if (wrapper) {
-                wrapper.style.width = "590px";
-                wrapper.style.right = "0";
-            }
-
-            e.stopPropagation();
-        });
-
-        extraRooms.forEach(option => {
-            option.addEventListener("click", () => {
-                let extraRoomWrapper = document.querySelector(".wrapper-number-room-extra");
-                if (extraRoomWrapper) {
-                    extraRoomWrapper.remove();
-                }
-                const wrapper = document.getElementById("roomWrapper");
-                if (wrapper) {
-                    wrapper.style.width = "214px";
-                    wrapper.style.right = "180px";
-                }
-            });
-        });
-
-        document.addEventListener("click", (e) => {
-            let extraRoomWrapper = document.querySelector(".wrapper-number-room-extra");
-
-            if (extraRoomWrapper &&
-                !familyOption.contains(e.target) &&
-                !extraRoomWrapper.contains(e.target)) {
-                extraRoomWrapper.remove();
-            }
-        });
     }
+
     function setItemWithExpiry(key, value, expiryMinutes) {
         const now = new Date().getTime();
         const expiryTime = now + expiryMinutes * 60 * 1000;
@@ -2058,47 +2211,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // function updateGuestSelection() {
-    //     const titleContent = document.querySelector(".title-content.vnt123");
-    //     const numberRooms = document.querySelector(".number-room-people");
-
-    //     if (!numberRooms) return;
-
-    //     numberRooms.addEventListener("click", (event) => {
-    //         const selectedOption = event.target.closest(".vnt1021");
-    //         console.log(selectedOption);
-
-    //         if (selectedOption) {
-    //             const selectText = selectedOption.querySelector(".title-Community12").textContent.trim();
-    //             console.log(selectText);
-    //             const selectTextElenment = selectTextElenment.textContent.trim();
-    //             const guests = selectTextElenment.match(/\d+ người lớn/);
-
-    //             if (guests) {
-    //                 titleContent.textContent = titleContent.textContent.replace(/\d+ người lớn/, guests[0]);
-    //             }
-
-    //             const extraRoomWrapper = document.querySelector(".wrapper-number-room-extra");
-    //             if (extraRoomWrapper) {
-    //                 extraRoomWrapper.remove();
-    //             }
-
-    //             numberRooms.style.height = "0";
-    //             numberRooms.classList.remove("opacity-block");
-    //             numberRooms.innerHTML = "";
-    //         }
-    //     });
-    // }
 
 
 
 
     function runFunctions() {
-
-
         waitForElement(".wrapper-number-room", handleRooms);
 
-        waitForElement(".wrapper-number-room", targetFamily);
+        handleRooms();
 
         displaySelectedDates();
 
@@ -2107,6 +2227,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     runFunctions();
+
+
 
 
 });

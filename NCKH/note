@@ -1,76 +1,10 @@
- <div class="sub-plane-start sub-plane"
-                                                        style=" left: 0; z-index: 3;">
-                                                        <div class="wrapper-sub-plane flex-column"
-                                                            style="width: 500px; height: 100%;">
-                                                            <div class="content-sub-plane flex-column "
-                                                                style="flex-wrap: wrap; width: 100%; max-height: 260px;">
-                                                                <div class="flex-column vnt125">
-                                                                    <h6 class="title-Community14"
-                                                                        style="font-weight: bold;">Miền Bắc</h6>
-                                                                    <div class="flex-column vnt126">
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Hà Nội
-                                                                        </div>
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Hà Nội
-                                                                        </div>
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Hà Nội
-                                                                        </div>
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Hà Nội
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="flex-column vnt125">
-                                                                    <h6 class="title-Community14"
-                                                                        style="font-weight: bold;">Miền Trung</h6>
-                                                                    <div class="flex-column vnt126">
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Huế
-                                                                        </div>
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Huế
-                                                                        </div>
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Huế
-                                                                        </div>
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Huế
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="flex-column vnt125">
-                                                                    <h6 class="title-Community14"
-                                                                        style="font-weight: bold;">Miền Nam</h6>
-                                                                    <div class="flex-column vnt126">
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Sài gòn
-                                                                        </div>
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Sài gòn
-                                                                        </div>
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Sài gòn
-                                                                        </div>
-                                                                        <div class="title-Community12 vnt127"
-                                                                            style="cursor: pointer; margin-top: 4px">
-                                                                            Sài gòn
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
+  <div class="content-room vnt1022 flex-align vn1023"
+                                                    style="border-bottom:1px solid rgb(226, 232, 240); background-color:inherit; justify-content: space-between;">
+                                                    <span>
+                                                        Đi theo gia đình
+                                                    </span>
+                                                    <svg width="8" height="14" fill="none">
+                                                        <path d="M1 1l6 6-6 6" stroke="#718096" stroke-width="1.5"
+                                                            stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    </svg>
+                                                </div>
